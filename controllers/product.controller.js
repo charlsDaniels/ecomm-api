@@ -1,23 +1,24 @@
+const { categoryExistsByName } = require("../helpers/validations")
 const { Product, Category } = require("../models")
 
 const productsGet = async (req, res) => {
-  const { from = 0, limit = 5 } = req.query
-  const query = { active: true }
-  
+  const { from = 0, limit = 5, category } = req.query
+  const query = { isAvailable: true }
+
+  if (category) {
+    const categoryDB = await categoryExistsByName(category)
+    query.category = categoryDB._id
+  }
+
   const [total, products] = await Promise.all([
     await Product.countDocuments(query),
     await Product.find(query)
-    .populate('user', 'name')
-    .populate('category', 'name')
-    .skip(Number(from))
-    .limit(Number(limit))
+      .populate('user', 'name')
+      .populate('category', 'name')
+      .skip(Number(from))
+      .limit(Number(limit))
   ])
-  
-  for (const prod of products) {
-    await prod.populate('user', 'name')
-    // .populate('category')
-  }
-  
+
   res.json({
     total,
     products
@@ -34,9 +35,8 @@ const productGet = async (req, res) => {
 }
 
 const productCreate = async (req, res) => {
-  
-  const { user, active, category, ...body } = req.body
-  
+  const { user, category, ...body } = req.body
+
   //TO DO: Check by name if Product already exists {body.name}
 
   const categoryDB = await Category.findOne({ name: category.toUpperCase() })
@@ -59,7 +59,6 @@ const productCreate = async (req, res) => {
 }
 
 //TO DO: Update and Delete methods
-
 
 module.exports = {
   productsGet,

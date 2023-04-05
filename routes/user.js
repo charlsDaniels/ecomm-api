@@ -7,7 +7,7 @@ const {
   userUpdate, 
   userDelete
 } = require('../controllers/user.controller');
-const { validateRole, validateEmail, documentExists } = require('../helpers/validations');
+const { validateUsername, validateRole, validateEmail, documentExists } = require('../helpers/validations');
 const {
   verifyJWT,
   hasRole,
@@ -23,9 +23,10 @@ router.get('/:id', [
   check('id').custom((value) => documentExists(value, User)),
 ], userGet)
 router.post('/', [
-  check('name', 'Name is required').not().isEmpty(),
-  check('password', 'Password must has 6 characters minimun').isLength({ min: 6 }),
-  check('email', 'Email has not valid format').isEmail(),
+  check('username', 'username is required').not().isEmpty(),
+  check('username').custom(validateUsername),
+  check('password', 'password must has 6 characters minimun').isLength({ min: 6 }),
+  check('email', 'email has not valid format').isEmail(),
   check('email').custom(validateEmail),
   check('role').custom(validateRole),
   validateFields

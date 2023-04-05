@@ -1,5 +1,7 @@
 const { Schema, model } = require('mongoose');
 
+const StockSchema = new Schema({ size: String, quantity: Number });
+
 const ProductSchema = ({
   name: {
     type: String,
@@ -9,7 +11,7 @@ const ProductSchema = ({
   description: {
     type: String
   },
-  active: {
+  isAvailable: {
     type: Boolean,
     default: true,
   },
@@ -28,13 +30,16 @@ const ProductSchema = ({
     required: true,
     required: [true, 'price is required'],
   },
-  available: {
+  isFeatured: {
     type: Boolean,
-    default: true
-  }
+    default: false
+  },
+  pictureUrl: {
+    type: String,
+  },
+  stock: [StockSchema]
 })
 
-console.log(ProductSchema.methods)
 // ProductSchema.methods.toJSON = function () {
 //   const { __v, active, ...data } = this.toObject()
 //   return data
