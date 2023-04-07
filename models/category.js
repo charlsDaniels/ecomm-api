@@ -14,6 +14,10 @@ const CategorySchema = ({
     type: Schema.Types.ObjectId,
     ref: 'User',
     required: [true, 'user is required'],
+  },
+  parentId: {
+    type: Schema.Types.ObjectId,
+    default: null
   }
 })
 

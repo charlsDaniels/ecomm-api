@@ -23,13 +23,12 @@ const userGet = async (req, res) => {
 }
 
 const userCreate = async (req, res) => {
-
-  const { name, email, password, role, ...rest } = req.body
+  const { username, email, password, role, ...rest } = req.body
 
   const salt = bcrypt.genSaltSync()
   const hashedPassword = bcrypt.hashSync(password, salt)
 
-  const user = new User({ name, email, password: hashedPassword, role, rest });
+  const user = new User({ username, email, password: hashedPassword, role, rest });
   await user.save()
 
   res.status(201).json(user)

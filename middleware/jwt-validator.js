@@ -6,7 +6,7 @@ const verifyJWT = async (req = request, res = response, next) => {
   const token = req.header('Authorization');
   if (!token) {
     return res.status(401).json({
-      error: 'Authorization Token not found'
+      msg: 'Authorization Token not found'
     })
   }
 
@@ -18,7 +18,7 @@ const verifyJWT = async (req = request, res = response, next) => {
     next()
   } catch (error) {
     res.status(401).json({
-      error: 'Token is not valid'
+      msg: 'Token is not valid'
     })
   }
 }

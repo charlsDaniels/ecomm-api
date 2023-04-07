@@ -8,10 +8,11 @@ class Server {
     this.app = express()
 
     this.paths = {
-      '/auth': '../routes/auth',
+      '/api/auth': '../routes/auth',
       '/api/user': '../routes/user',
       '/api/category': '../routes/category',
-      '/api/product': '../routes/product'
+      '/api/product': '../routes/product',
+      '/api/order': '../routes/order'
     }
 
     this.middlewares()

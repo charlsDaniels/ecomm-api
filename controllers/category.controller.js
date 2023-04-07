@@ -1,25 +1,34 @@
 const { Category } = require('../models')
 
 const categoriesGet = async (req, res) => {
-  const { from = 0, limit = 5 } = req.query
+  const { from = 0, limit } = req.query
   const query = { active: true }
 
-  const [total, categories] = await Promise.all([
-    await Category.countDocuments(query),
-    await Category.find(query)
-      .populate('user', 'name')
-      .skip(Number(from))
-      .limit(Number(limit))
-  ])
+  const categories = await Category.find(query)
+    .skip(Number(from))
+    .limit(Number(limit))
 
-  for (const cat of categories) {
-    await cat.populate('user')
+  res.json(await nestedCategories(categories))
+}
+
+const nestedCategories = (categories, parentId = null) => {
+  const categoryList = [];
+  let category;
+  if (parentId == null) {
+      category = categories.filter(cat => cat.parentId == null);
+  } else {
+      category = categories.filter(cat => String(cat.parentId) == String(parentId));
   }
 
-  res.json({
-    total,
-    categories
-  })
+  for (let cate of category) {
+      categoryList.push({
+          _id: cate._id,
+          name: cate.name,
+          children: nestedCategories(categories, cate._id)
+      })
+  }
+
+  return categoryList;
 }
 
 const categoryGet = async (req, res) => {
@@ -43,6 +52,7 @@ const categoryCreate = async (req, res) => {
 
   const data = {
     name,
+    parentId: req.body.parentId,
     user: req.user._id
   }
   const category = new Category(data)
@@ -72,7 +82,7 @@ const categoryUpdate = async (req, res) => {
 
 const categoryDelete = async (req, res) => {
   const { id } = req.params
-  const category = await Category.findByIdAndUpdate(id, { active: false}, { new: true })
+  const category = await Category.findByIdAndUpdate(id, { active: false }, { new: true })
   res.json(category)
 }
 
