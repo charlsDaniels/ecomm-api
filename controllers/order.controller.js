@@ -24,6 +24,7 @@ const ordersGet = async (req, res) => {
 const orderCreate = async (req, res) => {
   const data = {
     ...req.body,
+    trackingNumber: Math.random().toString(36).substr(2),
     buyer: req.user._id
   }
 
