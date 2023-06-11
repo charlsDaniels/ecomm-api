@@ -20,6 +20,6 @@ const generateJWT = async (userId) => {
   })
 }
 
-module.exports = {
+export default {
   generateJWT
 }

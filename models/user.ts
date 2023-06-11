@@ -1,6 +1,6 @@
-const { Schema, model } = require('mongoose')
+import { createSchema, ExtractDoc, ExtractProps, Type, typedModel } from 'ts-mongoose';
 
-const UserSchema = Schema({
+const UserSchema = createSchema({
   username: {
     type: String,
     required: [true, 'username is required'],
@@ -36,11 +36,13 @@ const UserSchema = Schema({
 });
 
 UserSchema.methods.toJSON = function() {
-  const { __v, _id, password, ...user } = this.toObject()
+  const { __v, _id, ...user } = this.toObject()
   return {
     uid: _id,
     ...user
   }
 }
 
-module.exports =  model('User', UserSchema);
+export const User = typedModel('User', UserSchema);
+export type UserDoc = ExtractDoc<typeof UserSchema>;
+export type UserProps = ExtractProps<typeof UserSchema>;

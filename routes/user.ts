@@ -1,26 +1,22 @@
-const { Router } = require('express');
-const { check } = require('express-validator');
-const { 
+import { Router } from "express";
+import { check } from 'express-validator';
+import { 
   usersGet, 
   userGet, 
   userCreate, 
   userUpdate, 
   userDelete
-} = require('../controllers/user.controller');
-const { validateUsername, validateRole, validateEmail, documentExists } = require('../helpers/validations');
-const {
-  verifyJWT,
-  hasRole,
-  validateFields
-} = require('../middleware');
-const { User } = require('../models');
+} from '../controllers/user.controller';
+import { validateUsername, validateRole, validateEmail, documentExists } from '../helpers/validations';
+import { verifyJWT, hasRole, validateFields } from '../middleware';
+import { User } from '../models';
 
 const router = Router()
 
 router.get('/', usersGet)
 router.get('/:id', [
   check('id', 'ID is not valid').isMongoId(),
-  check('id').custom((value) => documentExists(value, User)),
+  check('id').custom((value: string) => documentExists(value, User)),
 ], userGet)
 router.post('/', [
   check('username', 'username is required').not().isEmpty(),
@@ -33,7 +29,7 @@ router.post('/', [
 ], userCreate)
 router.put('/:id', [
   check('id', 'ID is not valid').isMongoId(),
-  check('id').custom((value) => documentExists(value, User)),
+  check('id').custom((value: string) => documentExists(value, User)),
   check('role').custom(validateRole),
   validateFields
 ], userUpdate)
@@ -41,8 +37,8 @@ router.delete('/:id', [
   verifyJWT,
   hasRole('ADMIN_ROLE'),
   check('id', 'ID is not valid').isMongoId(),
-  check('id').custom((value) => documentExists(value, User)),
+  check('id').custom((value: string) => documentExists(value, User)),
   validateFields
 ], userDelete)
 
-module.exports = router
+export default router;

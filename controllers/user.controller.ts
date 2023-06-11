@@ -1,7 +1,10 @@
-const bcrypt = require('bcryptjs')
-const User = require("../models/user")
+import { Request, Response } from "express";
 
-const usersGet = async (req, res) => {
+import bcrypt from 'bcryptjs';
+import { User } from "../models";
+import { UserRequest } from "../types/user";
+
+const usersGet = async (req: Request, res: Response) => {
   const { from = 0, limit = 5 } = req.query
   const query = { active: true }
 
@@ -16,13 +19,13 @@ const usersGet = async (req, res) => {
   })
 }
 
-const userGet = async (req, res) => {
+const userGet = async (req: Request, res: Response) => {
   const { id } = req.params
   const user = await User.findById(id)
   res.json(user)
 }
 
-const userCreate = async (req, res) => {
+const userCreate = async (req: Request, res: Response) => {
   const { username, email, password, role, ...rest } = req.body
 
   const salt = bcrypt.genSaltSync()
@@ -34,7 +37,7 @@ const userCreate = async (req, res) => {
   res.status(201).json(user)
 }
 
-const userUpdate = async (req, res) => {
+const userUpdate = async (req: Request, res: Response) => {
 
   const { id } = req.params
   const { _id, password, google, email, ...rest } = req.body
@@ -49,7 +52,7 @@ const userUpdate = async (req, res) => {
   res.status(204).json(user)
 }
 
-const userDelete = async (req, res) => {
+const userDelete = async (req: UserRequest, res: Response) => {
   const { id } = req.params
   const user = await User.findByIdAndUpdate(id, { active: false })
   res.json({
@@ -58,7 +61,7 @@ const userDelete = async (req, res) => {
   })
 }
 
-module.exports = {
+export {
   usersGet,
   userGet,
   userCreate,

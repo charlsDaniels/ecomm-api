@@ -15,16 +15,16 @@ const nestedCategories = (categories, parentId = null) => {
   const categoryList = [];
   let category;
   if (parentId == null) {
-      category = categories.filter(cat => cat.parentId == null);
+    category = categories.filter(cat => cat.parentId == null);
   } else {
-      category = categories.filter(cat => String(cat.parentId) == String(parentId));
+    category = categories.filter(cat => String(cat.parentId) == String(parentId));
   }
 
   for (let cate of category) {
       categoryList.push({
-          _id: cate._id,
-          name: cate.name,
-          children: nestedCategories(categories, cate._id)
+        _id: cate._id,
+        name: cate.name,
+        children: nestedCategories(categories, cate._id)
       })
   }
 

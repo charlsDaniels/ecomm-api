@@ -1,6 +1,6 @@
-const { User, Role, Category } = require('../models')
+import { User, Role, Category } from '../models';
 
-const validateRole = async (role) => {
+const validateRole = async (role: string) => {
   if (role) {
     const exists = await Role.findOne({ role })
     if (!exists) {
@@ -9,21 +9,21 @@ const validateRole = async (role) => {
   }
 }
 
-const validateEmail = async (email) => {
+const validateEmail = async (email: string) => {
   const emailExists = await User.findOne({ email })
   if (emailExists) {
     throw new Error(`Email ${email} already exists`)
   }
 }
 
-const documentExists = async (documentId, collection) => {
+const documentExists = async (documentId: string, collection: any) => {
   const document = await collection.findById(documentId)
   if (!document) {
     throw new Error(`There is no document with id ${documentId}`)
   }
 }
 
-const categoryExistsByName = async (category) => {
+const categoryExistsByName = async (category: string) => {
   const categoryDB = await Category.findOne({ name: category })
   if (!categoryDB) {
     throw new Error(`Category '${category}' doesn't exists`)
@@ -32,14 +32,14 @@ const categoryExistsByName = async (category) => {
   return categoryDB;
 }
 
-const validateUsername = async (username) => {
+const validateUsername = async (username: string) => {
   const usernameExists = await User.findOne({ username })
   if (usernameExists) {
     throw new Error(`Username ${username} already exists`)
   }
 }
 
-module.exports = {
+export {
   categoryExistsByName,
   documentExists,
   validateEmail,

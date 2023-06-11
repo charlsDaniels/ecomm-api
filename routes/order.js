@@ -15,7 +15,7 @@ router.get('/', ordersGet)
 //   check('id', 'ID is not valid').isMongoId(),
 //   check('id').custom((value) => documentExists(value, Order)),
 //   validateFields
-// ], productGet)
+// ], orderGet)
 router.post('/', [
   verifyJWT,
   check('total', 'total is required').not().isEmpty(),
@@ -27,12 +27,12 @@ router.post('/', [
 //   check('id', 'ID is not valid').isMongoId(),
 //   check('id').custom(validateCategoryById),
 //   validateFields
-// ], categoryUpdate)
+// ], orderUpdate)
 // router.delete('/:id', [
 //   verifyJWT,
 //   check('id', 'ID is not valid').isMongoId(),
 //   check('id').custom(validateCategoryById),
 //   validateFields
-// ], categoryDelete)
+// ], orderDelete)
 
 module.exports = router

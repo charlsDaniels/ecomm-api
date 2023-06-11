@@ -29,12 +29,12 @@ router.post('/', [
 //   check('id', 'ID is not valid').isMongoId(),
 //   check('id').custom(validateCategoryById),
 //   validateFields
-// ], categoryUpdate)
+// ], productUpdate)
 // router.delete('/:id', [
 //   verifyJWT,
 //   check('id', 'ID is not valid').isMongoId(),
 //   check('id').custom(validateCategoryById),
 //   validateFields
-// ], categoryDelete)
+// ], productDelete)
 
 module.exports = router

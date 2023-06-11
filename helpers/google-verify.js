@@ -13,6 +13,6 @@ async function googleVerify(token = '') {
   return ticket.getPayload()
 }
 
-module.exports = {
+export default {
   googleVerify
 }
